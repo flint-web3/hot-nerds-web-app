@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/AuthPage.css';
 import { useHotWallet } from '../providers/HotWalletProvider';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo640x360.png';
 
 const AuthPage: React.FC = () => {
   const navigate = useNavigate();

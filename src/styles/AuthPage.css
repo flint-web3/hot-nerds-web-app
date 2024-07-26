@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #d4b6ff;
+    background-color: #1a1c1b;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -12,16 +12,16 @@
   }
   
   .logo {
-    width: calc(100% - 40px);
+    width: calc(100%);
     margin-bottom: 40px;
     position: absolute;
-    top: 20px;
+    top: 200px;
   }
   
   
   .connect-wallet-button {
-    background-color: #7e56c1;
-    color: white;
+    background-color: #fef9a5;
+    color: #1a1c1b;
     padding: 25px 110px;
     border: none;
     border-radius: 10px;
