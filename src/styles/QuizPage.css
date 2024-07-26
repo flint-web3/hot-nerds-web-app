@@ -1,0 +1,122 @@
+/* src/styles/QuizPage.css */
+
+.start-quiz-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(90%);
+    background-color: #fef9a5;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+}
+
+.start-quiz-question {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.start-quiz-button, .go-back-button {
+    background-color: #1a1c1b;
+    color: #fef9a5;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.start-quiz-button:hover, .go-back-button:hover {
+    background-color: #1a1c1b;
+    color: #fef9a5;
+}
+
+.quiz-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #b18aff;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+}
+
+.timer {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    background: #8a6fe0;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.question {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+.option {
+    background-color: #6c63ff;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    margin: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 150px;
+    height: 70px;
+    transition: background-color 0.3s, border 0.3s;
+}
+
+.option.correct.selected {
+    background-color: #4caf50;
+    border: 2px solid #fff;
+}
+
+.option.wrong.selected {
+    background-color: #f44336;
+    border: 2px solid #fff;
+}
+
+.option:hover {
+    background-color: #7c73ff;
+}
+
+.option:disabled {
+    cursor: not-allowed;
+    background-color: #9c92ff;
+}
+
+.option.correct:disabled, .option.wrong:disabled {
+    background-color: inherit;
+}
+
+.result {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.result.correct {
+    color: #4caf50;
+}
+
+.result.wrong {
+    color: #f44336;
+}

@@ -1,34 +1,57 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useHotWallet } from '../providers/HotWalletProvider';
+import { useQuizContext } from '../contexts/QuizContext';
 import '../styles/MainPage.css';
 import settings_button from '../assets/settings_button.png';
 
 const MainPage: React.FC = () => {
     const navigate = useNavigate();
     const { user } = useHotWallet();
-
-    // Стейт для таймеров
-    const [timers, setTimers] = useState({
-        dailyQuiz: 775, // Время в секундах
-        eventQuiz: 20676,
-        anotherQuiz: 47556,
-    });
+    const { quizData, setQuizData } = useQuizContext();
+    const [timers, setTimers] = useState<{ [key: number]: number }>({});
 
     useEffect(() => {
         const tg = (window as any).Telegram.WebApp;
         tg.ready();
 
+        const updateTimers = () => {
+            setTimers(prevTimers => {
+                const newTimers = { ...prevTimers };
+                quizData?.forEach((quiz: any) => {
+                    const dueDate = new Date(quiz.due).getTime();
+                    const currentTime = new Date().getTime();
+                    const timeLeft = Math.max(Math.floor((dueDate - currentTime) / 1000), 0);
+                    newTimers[quiz.id] = timeLeft;
+                });
+                return newTimers;
+            });
+        };
+
+        updateTimers();
         const timerInterval = setInterval(() => {
-            setTimers((prevTimers) => ({
-                dailyQuiz: prevTimers.dailyQuiz > 0 ? prevTimers.dailyQuiz - 1 : 0,
-                eventQuiz: prevTimers.eventQuiz > 0 ? prevTimers.eventQuiz - 1 : 0,
-                anotherQuiz: prevTimers.anotherQuiz > 0 ? prevTimers.anotherQuiz - 1 : 0,
-            }));
+            setTimers(prevTimers => {
+                const newTimers = { ...prevTimers };
+                for (const quizId in newTimers) {
+                    newTimers[quizId] = Math.max(newTimers[quizId] - 1, 0);
+                }
+                return newTimers;
+            });
         }, 1000);
 
+        try {
+            fetch("https://0945-91-185-10-127.ngrok-free.app/user/" + user?.accounts.near + "/quizzes")
+                .then(response => response.json())
+                .then(data => {
+                    setQuizData(data);
+                    updateTimers();
+                });
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+
         return () => clearInterval(timerInterval);
-    }, []);
+    }, [quizData, user?.accounts.near, setQuizData]);
 
     const formatTime = (seconds: number) => {
         const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
@@ -46,6 +69,10 @@ const MainPage: React.FC = () => {
         navigate('/settings');
     };
 
+    const startQuiz = (quizId: number) => {
+        navigate(`/quiz/${quizId}`);
+    };
+
     return (
         <div className="main-page">
             <div className="header">
@@ -57,33 +84,21 @@ const MainPage: React.FC = () => {
                 </button>
             </div>
             <div className="quiz-list">
-                <div className="quiz-item">
-                    <button className="quiz-action-button">
-                        <div className="quiz-title">DAILY QUIZ</div>
-                    </button>
-                    <div className="quiz-details">
-                        <div className="quiz-timer">{formatTime(timers.dailyQuiz)}</div>
-                        <div className="quiz-cost">FREE</div>
-                    </div>
-                </div>
-                <div className="quiz-item">
-                    <button className="quiz-action-button">
-                        <div className="quiz-title">EVENT QUIZ</div>
-                    </button>
-                    <div className="quiz-details">
-                        <div className="quiz-timer">{formatTime(timers.eventQuiz)}</div>
-                        <div className="quiz-cost">0.5</div>
-                    </div>
-                </div>
-                <div className="quiz-item">
-                    <button className="quiz-action-button">
-                        <div className="quiz-title">ANOTHER QUIZ</div>
-                    </button>
-                    <div className="quiz-details">
-                        <div className="quiz-timer">{formatTime(timers.anotherQuiz)}</div>
-                        <div className="quiz-cost">5</div>
-                    </div>
-                </div>
+                {quizData && quizData.length > 0 ? (
+                    quizData.map((quiz: any) => (
+                        <div key={quiz.id} className="quiz-item">
+                            <button className="quiz-action-button" onClick={() => startQuiz(quiz.id)}>
+                                <div className="quiz-title">{quiz.name.toUpperCase()}</div>
+                            </button>
+                            <div className="quiz-details">
+                                <div className="quiz-timer">{formatTime(timers[quiz.id] || 0)}</div>
+                                <div className="quiz-cost">{quiz.price === 0 ? 'FREE' : quiz.price}</div>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <div>Loading quizzes...</div>
+                )}
             </div>
             <button className="leaderboards-button">LEADERBOARDS</button>
         </div>

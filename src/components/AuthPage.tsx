@@ -15,7 +15,7 @@ const AuthPage: React.FC = () => {
       tg.close();
     });
     return () => {
-      tg.offEvent('backButtonClicked', () => {});
+      tg.offEvent('backButtonClicked', () => { });
     };
   }, []);
 

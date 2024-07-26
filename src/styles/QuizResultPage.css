@@ -1,0 +1,35 @@
+.quiz-result-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #b18aff;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+}
+
+.result-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.result-details {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.leaderboard-button {
+    background-color: #6c63ff;
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.leaderboard-button:hover {
+    background-color: #7c73ff;
+}

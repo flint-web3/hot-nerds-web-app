@@ -23,8 +23,8 @@ interface HotWalletProviderProps {
 }
 
 const HotContext = createContext<HotContextProps>({
-  login: () => {},
-  logout: () => {},
+  login: () => { },
+  logout: () => { },
   here: null,
   user: null,
 });
@@ -41,7 +41,7 @@ export const HotWalletProvider: React.FC<HotWalletProviderProps> = ({ children }
     const init = async () => {
       const here = await HereWallet.connect({
         walletId: 'herewalletbot/app',
-        botId: 'hot_nerds_game_bot/app', 
+        botId: 'hot_nerds_game_bot/app',
       });
 
       setHere(here);
@@ -49,6 +49,17 @@ export const HotWalletProvider: React.FC<HotWalletProviderProps> = ({ children }
       const isSigned = await here.isSignedIn();
       if (isSigned) {
         const near = await here.getAccountId();
+        try {
+          const response = await fetch("https://0945-91-185-10-127.ngrok-free.app/user/" + near, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}),
+          });
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
         const hotBalance = await getHotBalance(near);
         setUser({ accounts: { near, solana: '', evm: '', ton: '' }, hotBalance });
       }
