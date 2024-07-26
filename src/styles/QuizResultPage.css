@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #b18aff;
+    background-color: #1a1c1b;
     color: white;
     font-family: 'Arial', sans-serif;
     text-align: center;
@@ -21,15 +21,16 @@
     margin-bottom: 20px;
 }
 
-.leaderboard-button {
-    background-color: #6c63ff;
-    color: #fff;
+.main-button {
+    background-color: #fef9a5;
+    color: #1a1c1b;
     border: none;
     padding: 15px 30px;
-    font-size: 1.2rem;
+    font-size: 16px;
+    font-weight: 700;
     cursor: pointer;
 }
 
-.leaderboard-button:hover {
-    background-color: #7c73ff;
+.main-button:hover {
+    background-color: #fe4114;
 }

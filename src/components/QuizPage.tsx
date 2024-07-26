@@ -4,11 +4,6 @@ import '../styles/QuizPage.css';
 import { useHotWallet } from '../providers/HotWalletProvider';
 import { useQuizQuestionsContext } from '../contexts/QuizQuestionsContext';
 
-interface QuizQuestion {
-    question: string;
-    answers: string[];
-    correct_answer: number;
-}
 
 const QuizPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -57,7 +52,7 @@ const QuizPage: React.FC = () => {
             setTimer(10);
         } else {
             try {
-                await fetch("https://0945-91-185-10-127.ngrok-free.app/user/" + user?.accounts.near + "/quiz_score/" + id, {
+                await fetch(`https://0945-91-185-10-127.ngrok-free.app/user/${user?.accounts.near}/quiz_score/${id}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -71,67 +66,55 @@ const QuizPage: React.FC = () => {
         }
     };
 
-    const handleStartQuiz = async () => {
-        try {
-            await fetch(`https://0945-91-185-10-127.ngrok-free.app/user/${user?.accounts.near}/join_quiz/${id}`)
-                .then(response => response.json())
-                .then(data => console.log(data));
-        } catch (error) {
-            console.error('Error joining quiz:', error);
-        }
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const joinQuizResponse = await fetch(`https://0945-91-185-10-127.ngrok-free.app/user/${user?.accounts.near}/join_quiz/${id}`);
+                const joinQuizData = await joinQuizResponse.json();
+                console.log(joinQuizData);
 
-        try {
-            await fetch(`https://0945-91-185-10-127.ngrok-free.app/user/${user?.accounts.near}/quiz_questions/${id}`)
-                .then(response => response.json())
-                .then(data => setQuizQuestionsData(data));
-        } catch (error) {
-            console.error('Error fetching quiz questions:', error);
-        }
-        if (!quizQuestionsData || quizQuestionsData.length === 0) {
-            return <div>Loading...</div>;
-        }
-        setQuizStarted(true);
-        setTimer(10);
-    };
+                const questionsResponse = await fetch(`https://0945-91-185-10-127.ngrok-free.app/user/${user?.accounts.near}/quiz_questions/${id}`);
+                const questionsData = await questionsResponse.json();
+                console.log('Questions data fetched:', questionsData);
+                setQuizQuestionsData(questionsData);
+                setQuizStarted(true);
+                setTimer(10);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
 
-    const handleGoBack = () => {
-        navigate('/main');
-    };
+        fetchData();
+    }, [id, setQuizQuestionsData, user?.accounts.near]);
+
+    useEffect(() => {
+        console.log('Quiz Questions Data:', quizQuestionsData);
+    }, [quizQuestionsData]);
+
+    if (!quizQuestionsData || quizQuestionsData.length === 0) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className="quiz-page">
-            {!quizStarted ? (
-                <div className="start-quiz-container">
-                    <div className="start-quiz-question">Are you ready?</div>
-                    <button className="start-quiz-button" onClick={handleStartQuiz}>
-                        Start the quiz!
+            <div className="timer">{timer}s</div>
+            <div className="question">{quizQuestionsData[currentQuestionIndex].question}</div>
+            <div className="options">
+                {quizQuestionsData[currentQuestionIndex].answers.map((option: any, index: any) => (
+                    <button
+                        key={index}
+                        className={`option ${selectedOption === index ? (isAnswerCorrect ? 'correct selected' : 'wrong selected') : ''}`}
+                        onClick={() => handleOptionClick(index)}
+                        disabled={selectedOption !== null}
+                    >
+                        {option}
                     </button>
-                    <button className="go-back-button" onClick={handleGoBack}>
-                        Go back
-                    </button>
+                ))}
+            </div>
+            {selectedOption !== null && (
+                <div className={`result ${isAnswerCorrect ? 'correct' : 'wrong'}`}>
+                    {isAnswerCorrect ? 'Correct' : 'Incorrect'}
                 </div>
-            ) : (
-                <>
-                    <div className="timer">{timer}s</div>
-                    <div className="question">{quizQuestionsData[currentQuestionIndex].question}</div>
-                    <div className="options">
-                        {quizQuestionsData[currentQuestionIndex].answers.map((option: any, index: any) => (
-                            <button
-                                key={index}
-                                className={`option ${selectedOption === index ? (isAnswerCorrect ? 'correct selected' : 'wrong selected') : ''}`}
-                                onClick={() => handleOptionClick(index)}
-                                disabled={selectedOption !== null}
-                            >
-                                {option}
-                            </button>
-                        ))}
-                    </div>
-                    {selectedOption !== null && (
-                        <div className={`result ${isAnswerCorrect ? 'correct' : 'wrong'}`}>
-                            {isAnswerCorrect ? 'Correct' : 'Incorrect'}
-                        </div>
-                    )}
-                </>
             )}
         </div>
     );

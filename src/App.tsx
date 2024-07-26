@@ -5,6 +5,7 @@ import MainPage from './components/MainPage';
 import SettingsPage from './components/SettingsPage';
 import QuizPage from './components/QuizPage';
 import QuizResultPage from './components/QuizResultPage';
+import StartQuizPage from './components/StartQuizPage';
 import { HotWalletProvider } from './providers/HotWalletProvider';
 import { QuizProvider } from './contexts/QuizContext';
 import { QuizQuestionsProvider } from './contexts/QuizQuestionsContext';
@@ -20,6 +21,7 @@ const App: React.FC = () => {
               <Route path="/" element={<AuthPage />} />
               <Route path="/main" element={<MainPage />} />
               <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/quiz-start/:id" element={<StartQuizPage />} />
               <Route path="/quiz/:id" element={<QuizPage />} />
               <Route path="/quiz-result" element={<QuizResultPage />} />
             </Routes>

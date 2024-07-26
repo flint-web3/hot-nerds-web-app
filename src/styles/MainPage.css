@@ -49,7 +49,7 @@
     display: grid;
     gap: 20px;
     grid-area: quiz-list;
-    grid-auto-rows: min-content; /* Ensure grid items don't stretch */
+    grid-auto-rows: min-content;
 }
 
 .quiz-item {

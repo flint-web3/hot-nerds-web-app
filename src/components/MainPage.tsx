@@ -70,7 +70,7 @@ const MainPage: React.FC = () => {
     };
 
     const startQuiz = (quizId: number) => {
-        navigate(`/quiz/${quizId}`);
+        navigate(`/quiz-start/${quizId}`);
     };
 
     return (
