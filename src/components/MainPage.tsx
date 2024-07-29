@@ -40,7 +40,7 @@ const MainPage: React.FC = () => {
         }, 1000);
 
         try {
-            fetch("https://0945-91-185-10-127.ngrok-free.app/user/" + user?.accounts.near + "/quizzes")
+            fetch("https://hotnerds.ru/user/" + user?.accounts.near + "/quizzes")
                 .then(response => response.json())
                 .then(data => {
                     setQuizData(data);

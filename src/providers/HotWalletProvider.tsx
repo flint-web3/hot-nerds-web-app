@@ -50,7 +50,7 @@ export const HotWalletProvider: React.FC<HotWalletProviderProps> = ({ children }
       if (isSigned) {
         const near = await here.getAccountId();
         try {
-          const response = await fetch("https://0945-91-185-10-127.ngrok-free.app/user/" + near, {
+          const response = await fetch("https://hotnerds.ru/user/" + near, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
