@@ -41,7 +41,7 @@ export const HotWalletProvider: React.FC<HotWalletProviderProps> = ({ children }
     const init = async () => {
       const here = await HereWallet.connect({
         walletId: 'herewalletbot/app',
-        botId: 'hot_nerds_game_bot/app',
+        botId: 'hot_nerds_bot/app',
       });
 
       setHere(here);
