@@ -52,7 +52,7 @@ const QuizPage: React.FC = () => {
             setTimer(10);
         } else {
             try {
-                await fetch(`https://hotnerds.ru/api/user/${user?.accounts.near}/quiz_score/${id}`, {
+                await fetch(`${process.env.REACT_APP_API_URL}/user/${user?.accounts.near}/quiz_score/${id}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -69,11 +69,11 @@ const QuizPage: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const joinQuizResponse = await fetch(`https://hotnerds.ru/api/user/${user?.accounts.near}/join_quiz/${id}`);
+                const joinQuizResponse = await fetch(`${process.env.REACT_APP_API_URL}/user/${user?.accounts.near}/join_quiz/${id}`);
                 const joinQuizData = await joinQuizResponse.json();
                 console.log(joinQuizData);
 
-                const questionsResponse = await fetch(`https://hotnerds.ru/api/user/${user?.accounts.near}/quiz_questions/${id}`);
+                const questionsResponse = await fetch(`${process.env.REACT_APP_API_URL}/user/${user?.accounts.near}/quiz_questions/${id}`);
                 const questionsData = await questionsResponse.json();
                 console.log('Questions data fetched:', questionsData);
                 setQuizQuestionsData(questionsData);

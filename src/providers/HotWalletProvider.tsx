@@ -41,7 +41,7 @@ export const HotWalletProvider: React.FC<HotWalletProviderProps> = ({ children }
     const init = async () => {
       const here = await HereWallet.connect({
         walletId: 'herewalletbot/app',
-        botId: 'hot_nerds_bot/app',
+        botId: `${process.env.REDIRECT_BOT_ID}`,
       });
 
       setHere(here);
@@ -50,7 +50,7 @@ export const HotWalletProvider: React.FC<HotWalletProviderProps> = ({ children }
       if (isSigned) {
         const near = await here.getAccountId();
         try {
-          const response = await fetch("https://hotnerds.ru/api/user/" + near, {
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/user` + near, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

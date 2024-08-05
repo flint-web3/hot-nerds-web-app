@@ -40,7 +40,7 @@ const MainPage: React.FC = () => {
         }, 1000);
 
         try {
-            fetch("https://hotnerds.ru/api/user/" + user?.accounts.near + "/quizzes")
+            fetch(`${process.env.REACT_APP_API_URL}/user/` + user?.accounts.near + `/quizzes`)
                 .then(response => response.json())
                 .then(data => {
                     setQuizData(data);
