@@ -4,6 +4,7 @@ import { useHotWallet } from '../providers/HotWalletProvider';
 import { useQuizContext } from '../contexts/QuizContext';
 import '../styles/MainPage.css';
 import settings_button from '../assets/settings_button.png';
+import hot_icon from '../assets/hot-icon.png';
 
 const MainPage: React.FC = () => {
     const navigate = useNavigate();
@@ -54,10 +55,11 @@ const MainPage: React.FC = () => {
     }, [quizData, user?.accounts.near, setQuizData]);
 
     const formatTime = (seconds: number) => {
-        const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+        const d = Math.floor(seconds / 86400);
+        const h = Math.floor((seconds % 86400) / 3600).toString().padStart(2, '0');
         const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
         const s = (seconds % 60).toString().padStart(2, '0');
-        return `${h}:${m}:${s}`;
+        return d > 0 ? `${d} DAYS ${h}:${m}:${s}` : `${h}:${m}:${s}`;
     };
 
     if (!user) {
@@ -91,8 +93,21 @@ const MainPage: React.FC = () => {
                                 <div className="quiz-title">{quiz.name.toUpperCase()}</div>
                             </button>
                             <div className="quiz-details">
-                                <div className="quiz-timer">{formatTime(timers[quiz.id] || 0)}</div>
-                                <div className="quiz-cost">{quiz.price === 0 ? 'FREE' : quiz.price}</div>
+                                <div className="quiz-timer-container">
+                                    <div className="quiz-label">TIME LEFT:</div>
+                                    <div className="quiz-timer">{formatTime(timers[quiz.id] || 0)}</div>
+                                </div>
+                                <div className="quiz-cost-container">
+                                    <div className="quiz-label">COST:</div>
+                                    <div className="quiz-cost">
+                                        {quiz.price === 0 ? 'FREE' : (
+                                            <>
+                                                <img src={hot_icon} alt="Cost" className="cost-icon" />
+                                                {quiz.price}
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     ))

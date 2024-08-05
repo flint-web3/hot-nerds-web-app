@@ -65,8 +65,16 @@
     border: 2px solid #fff;
 }
 
-.option:hover {
-    background-color: #fe4114;
+@media (hover: hover) {
+    .option:hover {
+        background-color: #fe4114;
+    }
+}
+
+@media (hover: none) {
+    .option:active {
+        background-color: #fe4114;
+    }
 }
 
 .option:disabled {
